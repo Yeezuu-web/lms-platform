@@ -1,5 +1,18 @@
 version: '4'
 services:
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: DockerFile.dev
+    ports:
+      -3000:3000
+    volumes:
+      - .:/frontend
+    environment:
+      - frontend/.env.local
+    depends_on:
+      - server
+      
   server:
     build: 
      context: ./server
