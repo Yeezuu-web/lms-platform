@@ -35,8 +35,6 @@ const isAuthenticated = CatchAsyncMiddleware(
       process.env.ACCESS_TOKEN_SECRET as Secret
     ) as JwtPayload;
 
-    console.log(deconde);
-
     const user = await redis.get(deconde.sub as RedisKey);
 
     if (!user) {
