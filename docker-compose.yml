@@ -19,7 +19,10 @@ services:
       - "3000:3000"
     volumes:
       - ./frontend:/app
-      - ./frontend/.env.local:/app/.env.local
+      - ./frontend/.env.local:/app/frontend/.env.local
+    environment:
+      - NODE_ENV=development
+      - DOTENV_CONFIG_PATH: /app/frontend/.env.local
     depends_on:
       - server
       - nginx
@@ -32,9 +35,10 @@ services:
       - "8000:8000"
     volumes:
       - ./server:/app
+      - ./server/.env:/app/server/.env
     environment:
       - NODE_ENV=development
-      - ./server/.env
+      - DOTENV_CONFIG_PATH: /app/server/.env
     depends_on:
       - redis
       - mongodb
