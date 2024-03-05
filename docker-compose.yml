@@ -20,7 +20,9 @@ services:
       context: ./server
       dockerfile: DockerFile.dev
     ports:
-      - "8000:8000"
+      - "8000"
+    deploy:
+      replicas: 3 # The number of instances to run for the service.
     volumes:
       - ./server:/app
       - ./server/.env:/app/.env
