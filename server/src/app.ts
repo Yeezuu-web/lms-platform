@@ -27,7 +27,7 @@ app.use(
 );
 
 app.get('/favico.ico', (req: Request, res: Response) => {
-  res.sendStatus(404).end();
+  res.sendStatus(200).end();
 });
 
 app.use('/api/v1', UserRoutes);
