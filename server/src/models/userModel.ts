@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import mongoose, { Document, Model, Schema } from 'mongoose';
 import bcrypt from 'bcrypt';
-import * as dotenv from 'dotenv';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -78,6 +78,7 @@ userSchema.methods.SignAccessToken = function () {
     sub: this._id, // subject - it should be unique identifier of user
     username: this.username,
   };
+
   return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET || '');
 };
 

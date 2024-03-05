@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt, { Secret } from 'jsonwebtoken';
-import * as dotenv from 'dotenv';
+import dotenv from 'dotenv';
 import userModel, { IUser } from '@/models/userModel';
 import CatchAsyncMiddleware from '@/middlewares/catchAsyncMiddleware';
 import ErrorHandler from '@/configs/errorHandler';
@@ -20,10 +20,11 @@ export const registration = CatchAsyncMiddleware(
 
     const isEmailExist = await userModel.findOne({ email });
     if (isEmailExist) {
-      throw new ErrorHandler(
+      const error = new ErrorHandler(
         `The email ${email} has already been registered`,
         400
       );
+      return error.sendErrorResponse(res);
     }
 
     const user: IRegistrationBody = {
@@ -56,7 +57,8 @@ export const registration = CatchAsyncMiddleware(
         activationToken: activationToken.token,
       });
     } catch (e: any) {
-      throw new ErrorHandler(e.message, 400);
+      const error = new ErrorHandler(e.message, 400);
+      return error.sendErrorResponse(res);
     }
   }
 );
@@ -71,7 +73,7 @@ export const createActivationToken = (user: any): IActivationToken => {
 
   const token = jwt.sign(
     { user, activationCode },
-    process.env.ACTIVATION_SECRETE as Secret,
+    process.env.ACTIVATION_SECRET as Secret,
     { expiresIn: '5m' }
   );
 
@@ -90,24 +92,25 @@ export const activationUser = CatchAsyncMiddleware(
 
     const newUser: { user: IUser; activationCode: string } = jwt.verify(
       activationToken,
-      process.env.ACTIVATION_SECRETE as Secret
+      process.env.ACTIVATION_SECRET as Secret
     ) as { user: IUser; activationCode: string };
 
     if (newUser.activationCode !== activationCode) {
-      throw new ErrorHandler('Invalid activation code', 400);
+      const error = new ErrorHandler('Invalid activation code', 400);
+      return error.sendErrorResponse(res);
     }
-
     const { username, email, password } = newUser.user;
 
     const isEmailExist = await userModel.findOne({ email });
     if (isEmailExist) {
-      throw new ErrorHandler(
+      const error = new ErrorHandler(
         `The email ${email} has already been registered`,
         400
       );
+      return error.sendErrorResponse(res);
     }
 
-    const user = await userModel.create({
+    await userModel.create({
       username,
       email,
       password,
@@ -130,18 +133,21 @@ export const loginUser = CatchAsyncMiddleware(
     const { email, password } = req.body as ILoginUser;
 
     if (!email || !password) {
-      throw new ErrorHandler('Please enter email and password', 400);
+      const error = new ErrorHandler('Please enter email and password', 400);
+      return error.sendErrorResponse(res);
     }
 
     const user = await userModel.findOne({ email }).select('+password');
 
     if (!user) {
-      throw new ErrorHandler('The credentails is invalid.', 400);
+      const error = new ErrorHandler('Invalid credentails.', 400);
+      return error.sendErrorResponse(res);
     }
 
     const isCorrectPassword = await user.comparePassword(password);
     if (!isCorrectPassword) {
-      throw new ErrorHandler('The password is incorrect.', 400);
+      const error = new ErrorHandler('Password field is incorrect.', 400);
+      return error.sendErrorResponse(res);
     }
 
     sendToken(user, 200, res);
