@@ -1,5 +1,16 @@
 version: '4'
 services:
+  nginx:
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - server
+    networks:
+      - lms-networks
+
   frontend:
     build: 
       context: ./frontend
@@ -7,21 +18,22 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - .:/frontend
-    environment:
-      - frontend/.env.local
+      - ./frontend:/app
+      - ./frontend/.env.local:/app/.env.local
     depends_on:
       - server
-      
+      - nginx
+
   server:
     build: 
-     context: ./server
-     dockerfile: DockerFile.dev
+      context: ./server
+      dockerfile: DockerFile.dev
     ports:
       - "8000:8000"
     volumes:
-      - .:/server
+      - ./server:/app
     environment:
+      - NODE_ENV=development
       - ./server/.env
     depends_on:
       - redis
