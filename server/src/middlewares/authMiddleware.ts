@@ -21,7 +21,9 @@ function extractToken(authorizationHeader: string): string | null {
 
 const isAuthenticated = CatchAsyncMiddleware(
   async (req: Request, res: Response, next: NextFunction) => {
-    const access_token = req.cookies.access_token as string;
+    const access_token =
+      (req.cookies.access_token as string) ||
+      extractToken(req.headers.authorization as string);
     // const access_token = extractToken(req.headers.authorization as string);
 
     if (!access_token) {
