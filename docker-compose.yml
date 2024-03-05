@@ -19,7 +19,7 @@ services:
       - "3000:3000"
     volumes:
       - ./frontend:/app
-      - ./frontend/.env.local:/app/frontend/.env.local
+      - ./frontend/.env.local:/app/.env.local
     environment:
       - NODE_ENV=development
       - /app/.env.local
@@ -35,7 +35,7 @@ services:
       - "8000:8000"
     volumes:
       - ./server:/app
-      - ./server/.env:/app/server/.env
+      - ./server/.env:/app/.env
     environment:
       - NODE_ENV=development
       - /app/.env
