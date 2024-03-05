@@ -25,6 +25,7 @@ services:
       - ./server:/app
       - ./server/.env:/app/.env
       - ./server/node_modules:/app/node_modules
+    rester: always
     environment:
       - NODE_ENV=development
       - /app/.env
