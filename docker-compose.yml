@@ -22,7 +22,7 @@ services:
       - ./frontend/.env.local:/app/frontend/.env.local
     environment:
       - NODE_ENV=development
-      - /app/frontend/.env.local
+      - /app/.env.local
     depends_on:
       - server
       - nginx
@@ -38,7 +38,7 @@ services:
       - ./server/.env:/app/server/.env
     environment:
       - NODE_ENV=development
-      - /app/server/.env
+      - /app/.env
     depends_on:
       - redis
       - mongodb
