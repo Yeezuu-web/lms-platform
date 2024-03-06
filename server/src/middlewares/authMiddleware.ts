@@ -8,7 +8,8 @@ import { RedisKey } from 'ioredis';
 
 dotenv.config();
 
-function extractToken(authorizationHeader: string): string | null {
+export function extractToken(authorizationHeader: string): string | null {
+  if (!authorizationHeader) return null;
   if (authorizationHeader.startsWith('Bearer ')) {
     const parts = authorizationHeader.split(' ');
 
