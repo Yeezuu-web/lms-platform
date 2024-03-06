@@ -1,5 +1,6 @@
 # exclude everything except directory
 node_modules
 .env
+.env.docker
 dist
 
