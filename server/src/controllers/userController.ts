@@ -12,6 +12,8 @@ import {
 } from '@/utils/jwt';
 import { extractToken } from '@/middlewares/authMiddleware';
 import { redis } from '@/utils/redis';
+import { getUserById } from '@/services/userService';
+
 dotenv.config();
 
 interface IRegistrationBody
@@ -242,6 +244,28 @@ export const refresh = CatchAsyncMiddleware(
       res.cookie('resfres_token', refresToken, refreshTokenOptions);
 
       res.status(200).json({ success: true, accessToken });
+    } catch (e: any) {
+      const error = new ErrorHandler(e.message, e.status || 400);
+      return error.sendErrorResponse(res);
+    }
+  }
+);
+
+// Get current auth
+export const getAuth = CatchAsyncMiddleware(
+  async (req: Request, res: Response) => {
+    try {
+      const user = await getUserById(req.user!._id, res);
+
+      if (!user) {
+        const error = new ErrorHandler('You are not logged in', 401);
+        return error.sendErrorResponse(res);
+      }
+
+      res.status(201).json({
+        success: true,
+        user,
+      });
     } catch (e: any) {
       const error = new ErrorHandler(e.message, e.status || 400);
       return error.sendErrorResponse(res);

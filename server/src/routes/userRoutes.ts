@@ -1,5 +1,6 @@
 import {
   activationUser,
+  getAuth,
   loginUser,
   logoutUser,
   refresh,
@@ -14,6 +15,7 @@ UserRoutes.post('/register', registration);
 UserRoutes.post('/activate-user', activationUser);
 UserRoutes.post('/login', loginUser);
 UserRoutes.post('/logout', isAuthenticated, logoutUser);
+UserRoutes.post('/me', isAuthenticated, getAuth);
 UserRoutes.post('/refresh-token', refresh);
 
 export default UserRoutes;
