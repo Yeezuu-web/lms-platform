@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import Link from 'next/link';
 
 export default function Navbar({ isCollapsed }: { isCollapsed: boolean }) {
   return (
@@ -33,13 +34,28 @@ export default function Navbar({ isCollapsed }: { isCollapsed: boolean }) {
                 </div>
               </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-[185px]">
+            <DropdownMenuContent
+              align="start"
+              className="w-[185px] cursor-pointer"
+            >
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Profile</DropdownMenuItem>
-              <DropdownMenuItem>Billing</DropdownMenuItem>
-              <DropdownMenuItem>Team</DropdownMenuItem>
-              <DropdownMenuItem>Subscription</DropdownMenuItem>
+
+              <Link href="/dashboard/settings">
+                <DropdownMenuItem className="cursor-pointer">
+                  Profile
+                </DropdownMenuItem>
+              </Link>
+
+              <DropdownMenuItem className="cursor-pointer">
+                Billing
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                Team
+              </DropdownMenuItem>
+              <DropdownMenuItem className="text-red-500 hover:!text-red-400 cursor-pointer">
+                Sign out
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
           <ModeToggle />

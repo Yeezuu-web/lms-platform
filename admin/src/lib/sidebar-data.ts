@@ -93,6 +93,6 @@ export const sidebarTow: LinkItemProps = [
     title: 'Settings',
     label: '',
     icon: Settings2,
-    href: '/dashboard/sent',
+    href: '/dashboard/settings',
   },
 ];

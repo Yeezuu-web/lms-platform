@@ -14,7 +14,10 @@ import { usePathname } from 'next/navigation';
 
 export function Sidebar({ links, isCollapsed }: SidebarProps) {
   const param = usePathname();
-  console.log(param);
+
+  const breadcrumbArray = param.split('/').filter(Boolean);
+
+  const isSettingPage = breadcrumbArray.includes('settings');
 
   return (
     <div
@@ -30,12 +33,21 @@ export function Sidebar({ links, isCollapsed }: SidebarProps) {
                   href={link.href}
                   className={cn(
                     buttonVariants({
-                      variant: param === link.href ? 'default' : 'ghost',
+                      variant:
+                        param === link.href ||
+                        (isSettingPage &&
+                          link.href.startsWith('/dashboard/settings'))
+                          ? 'default'
+                          : 'ghost',
                       size: 'icon',
                     }),
                     'h-9 w-9',
-                    param === link.href &&
-                      'dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white'
+
+                    param === link.href ||
+                      (isSettingPage &&
+                        link.href.startsWith('/dashboard/settings'))
+                      ? 'dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white'
+                      : ''
                   )}
                 >
                   <link.icon className="h-4 w-4" />
@@ -57,11 +69,19 @@ export function Sidebar({ links, isCollapsed }: SidebarProps) {
               href={link.href}
               className={cn(
                 buttonVariants({
-                  variant: param === link.href ? 'default' : 'ghost',
+                  variant:
+                    param === link.href ||
+                    (isSettingPage &&
+                      link.href.startsWith('/dashboard/settings'))
+                      ? 'default'
+                      : 'ghost',
                   size: 'sm',
                 }),
-                param === link.href &&
-                  'justify-start flex items-center dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white',
+
+                param === link.href ||
+                  (isSettingPage && link.href.startsWith('/dashboard/settings'))
+                  ? 'justify-start flex items-center dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white'
+                  : '',
                 'justify-start'
               )}
             >
@@ -71,7 +91,10 @@ export function Sidebar({ links, isCollapsed }: SidebarProps) {
                 <span
                   className={cn(
                     'ml-auto',
-                    param === link.href && 'text-background dark:text-white'
+                    ((isSettingPage &&
+                      link.href.startsWith('/dashboard/settings')) ||
+                      param === link.href) &&
+                      'text-background dark:text-white'
                   )}
                 >
                   {link.label}

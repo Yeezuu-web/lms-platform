@@ -29,7 +29,7 @@ interface MainProps {
 export function Main({
   accounts,
   defaultLayout = [265, 1195],
-  defaultCollapsed = false,
+  defaultCollapsed = true,
   navCollapsedSize,
   children,
 }: MainProps) {
@@ -88,7 +88,7 @@ export function Main({
           <div className={cn('py-0', isCollapsed ? 'h-[56px]' : 'py-0')}>
             <Navbar isCollapsed />
           </div>
-          <main className="p-8">{children}</main>
+          <main className="p-4 md:p-8">{children}</main>
         </ResizablePanel>
       </ResizablePanelGroup>
     </TooltipProvider>
