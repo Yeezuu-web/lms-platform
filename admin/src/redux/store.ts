@@ -4,6 +4,7 @@ import { apiSlice } from './features/api/apiSlice';
 export const store = configureStore({
   reducer: {
     [apiSlice.reducerPath]: apiSlice.reducer,
+    auth: apiSlice.reducer,
   },
   devTools: false,
   middleware: (getDefaultMiddleware) =>

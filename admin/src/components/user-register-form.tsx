@@ -17,7 +17,7 @@ import {
   FormLabel,
   FormMessage,
 } from './ui/form';
-import { useRegisterMutation } from '@/redux/features/auth/authSlice';
+import { useRegisterMutation } from '@/redux/features/auth/authApi';
 import { toast } from 'sonner';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
