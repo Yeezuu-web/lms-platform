@@ -1,6 +1,13 @@
 'use server';
 
-import { IUser } from '@/stores/authStore';
+export type IUser = {
+  _id: string;
+  username: string;
+  email: string;
+  role: string;
+  isVerified: boolean;
+  courses: [];
+};
 
 interface IResponseType {
   success: boolean;
@@ -15,6 +22,7 @@ export const loginUser = async (credentails: {
   const response = await fetch('http://localhost:8000/api/v1/login', {
     method: 'POST',
     headers: [['Content-Type', 'application/json']],
+    credentials: 'include',
     body: JSON.stringify(credentails),
   });
 

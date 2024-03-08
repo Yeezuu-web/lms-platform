@@ -6,21 +6,13 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import { UserAuthForm } from '@/components/user-register-form';
-import { useAuthStore } from '@/stores/authStore';
 
 export default function AuthenticationPage() {
-  const login = useAuthStore((state) => state.login);
-  const user = useAuthStore((state) => state.user);
-  const handleLogin = () => {
-    login({ email: 'chhunpiseth.mail@gmail.com', password: 'password' });
-  };
-  console.log(user);
-
   return (
     <div className="m-w-full h-screen">
-      <button onClick={handleLogin}>Login Test</button>
-      <br />
-      {user?.email}
+      {/* <button onClick={handleLogin}>Login Test</button>
+      <br /> */}
+      {/* {user?.email} */}
       <div className="container relative h-screen flex flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
         <Link
           href="/auth/login"
