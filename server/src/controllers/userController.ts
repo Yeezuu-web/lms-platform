@@ -152,7 +152,6 @@ export const loginUser = CatchAsyncMiddleware(
       }
 
       const user = await userModel.findOne({ email }).select('+password');
-
       if (!user) {
         const error = new ErrorHandler('Invalid credentails.', 400);
         return error.sendErrorResponse(res);
@@ -164,7 +163,17 @@ export const loginUser = CatchAsyncMiddleware(
         return error.sendErrorResponse(res);
       }
 
-      sendToken(user, 200, res);
+      const userWithoutPassword = new userModel({
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        avatar: user.avatar,
+        role: user.role,
+        isVerified: user.isVerified,
+        courses: user.courses,
+      });
+
+      sendToken(userWithoutPassword as IUser, 200, res);
     } catch (e: any) {
       const error = new ErrorHandler(e.message, e.statusCode || 500);
       return error.sendErrorResponse(res);
