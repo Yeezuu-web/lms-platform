@@ -10,9 +10,6 @@ import { UserAuthForm } from '@/components/user-register-form';
 export default function AuthenticationPage() {
   return (
     <div className="m-w-full h-screen">
-      {/* <button onClick={handleLogin}>Login Test</button>
-      <br /> */}
-      {/* {user?.email} */}
       <div className="container relative h-screen flex flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
         <Link
           href="/auth/login"
