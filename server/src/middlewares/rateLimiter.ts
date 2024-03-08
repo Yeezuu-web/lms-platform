@@ -23,7 +23,7 @@ export const rateLimiter = (rateLimit: number, timeFrame?: number) => {
 
       if (requests > rateLimit) {
         res.status(503).json({
-          error: `Too many requests`,
+          message: `Too many requests`,
           callsInAMinute: requests,
           ttl,
         });

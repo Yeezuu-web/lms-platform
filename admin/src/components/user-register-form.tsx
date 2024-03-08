@@ -33,7 +33,7 @@ const formSchema = z
     path: ['confirmPassword'],
   });
 
-export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
+export function UserAuthForm({ className }: UserAuthFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -52,7 +52,13 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       form.reset();
     } else if (error) {
       if ('data' in error) {
-        toast.error((error as any).data?.message);
+        toast.error(`
+          ${(error as any).data?.message} ${
+          (error as any).data?.ttl
+            ? 'wait ' + (error as any).data?.ttl + 's'
+            : ''
+        }
+        `);
       }
     }
   }, [isSuccess, error, data, form]);

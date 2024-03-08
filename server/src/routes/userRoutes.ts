@@ -7,11 +7,12 @@ import {
   registration,
 } from '@/controllers';
 import isAuthenticated from '@/middlewares/authMiddleware';
+import { rateLimiter } from '@/middlewares/rateLimiter';
 import { Router } from 'express';
 
 const UserRoutes = Router();
 
-UserRoutes.post('/register', registration);
+UserRoutes.post('/register', rateLimiter(5, 60), registration);
 UserRoutes.post('/activate-user', activationUser);
 UserRoutes.post('/login', loginUser);
 UserRoutes.post('/logout', isAuthenticated, logoutUser);
