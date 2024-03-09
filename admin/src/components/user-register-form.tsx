@@ -25,6 +25,7 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const formSchema = z
   .object({
+    username: z.string(),
     email: z.string().email('Please enter a valid email address'),
     password: z.string().min(8, 'Password should have at least 8 characters'),
     confirmPassword: z.string(),
@@ -40,6 +41,7 @@ export function UserAuthForm({ className }: UserAuthFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      username: '',
       email: '',
       password: '',
       confirmPassword: '',
@@ -65,7 +67,7 @@ export function UserAuthForm({ className }: UserAuthFormProps) {
         `);
       }
     }
-  }, [isSuccess, error, data, form]);
+  }, [isSuccess, error, data, form, router]);
 
   async function onSubmit() {
     await register(form.getValues());
@@ -78,6 +80,28 @@ export function UserAuthForm({ className }: UserAuthFormProps) {
           onSubmit={form.handleSubmit(onSubmit)}
           className={cn('grid gap-6', className)}
         >
+          <FormField
+            control={form.control}
+            name="username"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Username</FormLabel>
+                <FormControl>
+                  <Input
+                    id="username"
+                    placeholder="Piseth Chhun"
+                    type="text"
+                    autoCapitalize="none"
+                    autoComplete="off"
+                    autoCorrect="off"
+                    disabled={isLoading}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="email"

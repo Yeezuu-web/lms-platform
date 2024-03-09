@@ -1,7 +1,7 @@
 import { IUser } from '@/servers/user-actions';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-interface AuthState {
+export interface AuthState {
   token: string | null;
   user: IUser | null;
 }

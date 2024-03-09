@@ -11,12 +11,13 @@ import { useActivationMutation } from '@/redux/features/auth/authApi';
 import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
 import { redirect } from 'next/navigation';
+import { RootState } from '@/redux/store';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserActivateForm({ className, ...props }: UserAuthFormProps) {
   const [inValidError, setInValidError] = React.useState<boolean>(false);
-  const { token } = useSelector((state) => state.auth);
+  const { token } = useSelector((state: RootState) => state.auth);
   const [activation, { isLoading, data, isSuccess, error }] =
     useActivationMutation();
 
@@ -45,7 +46,6 @@ export function UserActivateForm({ className, ...props }: UserAuthFormProps) {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const enteredOTP = otp.join('');
-    console.log(token);
     if (enteredOTP.length === 4) {
       await activation({
         activationToken: token,
