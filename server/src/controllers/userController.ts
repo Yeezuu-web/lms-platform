@@ -157,6 +157,11 @@ export const loginUser = CatchAsyncMiddleware(
         return error.sendErrorResponse(res);
       }
 
+      if (user.isVerified) {
+        const error = new ErrorHandler('Please activate your account.', 400);
+        return error.sendErrorResponse(res);
+      }
+
       const isCorrectPassword = await user.comparePassword(password);
       if (!isCorrectPassword) {
         const error = new ErrorHandler('Password field is incorrect.', 400);

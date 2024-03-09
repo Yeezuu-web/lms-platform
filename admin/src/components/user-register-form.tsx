@@ -19,6 +19,7 @@ import {
 } from './ui/form';
 import { useRegisterMutation } from '@/redux/features/auth/authApi';
 import { toast } from 'sonner';
+import { redirect } from 'next/navigation';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -50,6 +51,7 @@ export function UserAuthForm({ className }: UserAuthFormProps) {
     if (isSuccess) {
       toast.success(data?.message || 'Account created successfully!');
       form.reset();
+      redirect('/auth/activate-account');
     } else if (error) {
       if ('data' in error) {
         toast.error(`
