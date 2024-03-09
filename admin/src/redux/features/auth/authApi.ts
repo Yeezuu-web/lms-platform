@@ -23,9 +23,7 @@ export const authApi = apiSlice.injectEndpoints({
           const result = await queryFulfilled;
           dispatch(
             // eslint-disable-next-line react-hooks/rules-of-hooks
-            useRegistration({
-              token: result.data?.activationToken,
-            })
+            useRegistration(result.data?.activationToken)
           );
         } catch (error: any) {
           console.log(error);
@@ -35,7 +33,7 @@ export const authApi = apiSlice.injectEndpoints({
     activation: builder.mutation({
       query: ({ activationToken, activationCode }) => ({
         url: 'activate-user',
-        methods: 'POST',
+        method: 'POST',
         body: {
           activationToken,
           activationCode,

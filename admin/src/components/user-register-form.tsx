@@ -19,7 +19,7 @@ import {
 } from './ui/form';
 import { useRegisterMutation } from '@/redux/features/auth/authApi';
 import { toast } from 'sonner';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -35,6 +35,8 @@ const formSchema = z
   });
 
 export function UserAuthForm({ className }: UserAuthFormProps) {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -51,7 +53,7 @@ export function UserAuthForm({ className }: UserAuthFormProps) {
     if (isSuccess) {
       toast.success(data?.message || 'Account created successfully!');
       form.reset();
-      redirect('/auth/activate-account');
+      router.push('/auth/activate-account');
     } else if (error) {
       if ('data' in error) {
         toast.error(`

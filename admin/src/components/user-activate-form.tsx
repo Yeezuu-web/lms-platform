@@ -16,9 +16,9 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserActivateForm({ className, ...props }: UserAuthFormProps) {
   const [inValidError, setInValidError] = React.useState<boolean>(false);
+  const { token } = useSelector((state) => state.auth);
   const [activation, { isLoading, data, isSuccess, error }] =
     useActivationMutation();
-  const { token } = useSelector((state: any) => state.atuh) || { token: '' };
 
   const [otp, setOTP] = React.useState<string[]>(['', '', '', '']);
   const inputRefs = React.useRef<HTMLInputElement[]>(Array(4).fill(null));
@@ -45,9 +45,13 @@ export function UserActivateForm({ className, ...props }: UserAuthFormProps) {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const enteredOTP = otp.join('');
-
+    console.log(token);
     if (enteredOTP.length === 4) {
-      await activation({ token, enteredOTP });
+      await activation({
+        activationToken: token,
+        activationCode: enteredOTP,
+      }).unwrap();
+      return;
     } else {
       setInValidError(true);
     }
