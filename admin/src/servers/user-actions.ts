@@ -1,5 +1,7 @@
 'use server';
 
+import { NextRequest } from 'next/server';
+
 export type IUser = {
   _id: string;
   username: string;
@@ -9,27 +11,13 @@ export type IUser = {
   courses: [];
 };
 
-interface IResponseType {
-  success: boolean;
-  user: IUser;
-  accessToken: string;
-}
-
-export const loginUser = async (credentails: {
-  email: string;
-  password: string;
-}): Promise<IResponseType> => {
-  const response = await fetch('http://localhost:8000/api/v1/login', {
-    method: 'POST',
-    headers: [['Content-Type', 'application/json']],
+export const getAuth = async (req: NextRequest) => {
+  const result = await fetch('http://localhost:8000/api/v1/me', {
+    method: req.method,
+    headers: req.headers,
     credentials: 'include',
-    body: JSON.stringify(credentails),
   });
 
-  if (!response.ok) {
-    const errorMessage = `Failed to login: ${response.statusText}`;
-    throw new Error(errorMessage);
-  }
-
-  return await response.json();
+  const data = await result.json();
+  return data.user;
 };

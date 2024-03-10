@@ -26,6 +26,7 @@ const isAuthenticated = CatchAsyncMiddleware(
       (req.cookies.access_token as string) ||
       extractToken(req.headers.authorization as string);
     // const access_token = extractToken(req.headers.authorization as string);
+    console.log(req.cookies.access_token);
 
     if (!access_token) {
       throw new ErrorHandler('Unautheticated', 401);

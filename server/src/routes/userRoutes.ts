@@ -16,7 +16,7 @@ UserRoutes.post('/register', rateLimiter(5, 60), registration);
 UserRoutes.post('/activate-user', activationUser);
 UserRoutes.post('/login', loginUser);
 UserRoutes.post('/logout', isAuthenticated, logoutUser);
-UserRoutes.post('/me', isAuthenticated, getAuth);
-UserRoutes.post('/refresh-token', refresh);
+UserRoutes.get('/me', isAuthenticated, getAuth);
+UserRoutes.get('/refresh-token', isAuthenticated, refresh);
 
 export default UserRoutes;

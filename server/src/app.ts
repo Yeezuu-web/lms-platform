@@ -8,8 +8,12 @@ import ErrorMiddleware from './middlewares/errorMiddleware';
 import healthRoutes from './routes/healthRoutes';
 
 dotenv.config();
-
+process.env.TZ = 'Asia/Phnom_penh';
 const app: Express = express();
+
+// Default Timezone
+const nDate = new Date(Date.now());
+console.log(`refrsh at ${nDate}`);
 
 // Body parser
 app.use(bodyParser.json({ limit: '50mb' }));
@@ -21,8 +25,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Cors - Cros Origin resource sharing
 app.use(
   cors({
-    origin: process.env.ORIGIN || '*',
     credentials: true,
+    origin: process.env.ORIGIN || '*',
   })
 );
 

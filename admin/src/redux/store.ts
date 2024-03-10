@@ -12,6 +12,17 @@ export const store = configureStore({
     getDefaultMiddleware().concat(apiSlice.middleware),
 });
 
+const initailizeApp = async () => {
+  await store.dispatch(
+    apiSlice.endpoints.refreshToken.initiate({}, { forceRefetch: true })
+  );
+  await store.dispatch(
+    apiSlice.endpoints.loadUser.initiate({}, { forceRefetch: true })
+  );
+};
+
+initailizeApp();
+
 export type RootState = {
   api: ReturnType<typeof apiSlice.reducer>;
   auth: AuthState;

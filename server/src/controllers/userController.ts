@@ -250,12 +250,12 @@ export const refresh = CatchAsyncMiddleware(
         payload,
         process.env.REFRESH_TOKEN_SECRET as Secret,
         {
-          expiresIn: '3day',
+          expiresIn: '2day',
         }
       );
 
       res.cookie('access_token', accessToken, accessTokenOptions);
-      res.cookie('resfres_token', refresToken, refreshTokenOptions);
+      res.cookie('refresh_token', refresToken, refreshTokenOptions);
 
       res.status(200).json({ success: true, accessToken });
     } catch (e: any) {

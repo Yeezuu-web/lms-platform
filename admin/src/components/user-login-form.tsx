@@ -18,6 +18,10 @@ import {
   FormLabel,
   FormMessage,
 } from './ui/form';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import { useLoginMutation } from '@/redux/features/auth/authApi';
+import { toast } from 'sonner';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -27,7 +31,8 @@ const formSchema = z.object({
 });
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const { token } = useSelector((state: RootState) => state.auth);
+  const [login, { isSuccess, data, error, isLoading }] = useLoginMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -37,19 +42,31 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     },
   });
 
-  async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault();
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
+  async function onSubmit() {
+    await login(form.getValues()).unwrap();
   }
+
+  React.useEffect(() => {
+    if (isSuccess) {
+      toast.success(data?.message || 'Account created successfully!');
+      form.reset();
+    } else if (error) {
+      if ('data' in error) {
+        toast.error(`
+            ${(error as any).data?.message} ${
+          (error as any).data?.ttl
+            ? 'wait ' + (error as any).data?.ttl + 's'
+            : ''
+        }
+          `);
+      }
+    }
+  }, [isSuccess, error, data, form]);
 
   return (
     <div className={cn('grid gap-6', className)} {...props}>
       <Form {...form}>
-        <form onSubmit={onSubmit} className="space-y-2">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
           <FormField
             name="email"
             control={form.control}

@@ -6,19 +6,27 @@ export interface AuthState {
   user: IUser | null;
 }
 
+interface LoginPayload {
+  accessToken: string;
+  user: IUser;
+}
+
 const initialState: AuthState = {
-  token: '' || null,
+  token: null,
   user: null,
 };
 
-const authSlice = createSlice({
+const authSlice: any = createSlice({
   name: 'auth',
   initialState,
   reducers: {
     useRegistration: (state, action: PayloadAction<string | null>) => {
       state.token = action.payload;
     },
-    useLoggedIn: (state, action) => {
+    useLoggedIn: (
+      state,
+      action: PayloadAction<{ accessToken: string; user: IUser }>
+    ) => {
       state.token = action.payload.accessToken;
       state.user = action.payload.user;
     },
