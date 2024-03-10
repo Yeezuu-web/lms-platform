@@ -78,7 +78,7 @@ export function UserAuthForm({ className }: UserAuthFormProps) {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className={cn('grid gap-6', className)}
+          className={cn('grid gap-2', className)}
         >
           <FormField
             control={form.control}
@@ -162,14 +162,14 @@ export function UserAuthForm({ className }: UserAuthFormProps) {
               </FormItem>
             )}
           />
-          <Button disabled={isLoading}>
+          <Button disabled={isLoading} className="mt-2">
             {isLoading && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
             Sign Up
           </Button>
 
-          <div className="relative">
+          <div className="relative my-2">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />
             </div>
