@@ -1,5 +1,4 @@
 import { Main } from '@/components/main';
-import AuthProvider from '@/providers/auth-provider';
 import { cookies } from 'next/headers';
 import React from 'react';
 

@@ -15,8 +15,6 @@ export default function AuthProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const { isLoading } = useLoadUserQuery({});
-
   const [currentUser, setCurrentUser] = useState<IUser | null>();
 
   const { user } = useSelector((state: RootState) => state.auth);
@@ -25,16 +23,12 @@ export default function AuthProvider({
   let isGoingExceptionalRoutes = exceptionalRoutes.includes(pathname);
 
   useEffect(() => {
-    if (!user) {
-      if (isGoingExceptionalRoutes) {
-        redirect(exceptionalRoutes[0]);
-      }
+    if (!user && isGoingExceptionalRoutes) {
+      redirect('/auth/login');
     } else {
       setCurrentUser(user);
     }
   }, [user, isGoingExceptionalRoutes]);
-
-  if (isLoading) return <Loader />;
 
   return <>{children}</>;
 }
