@@ -22,6 +22,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { useLoginMutation } from '@/redux/features/auth/authApi';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -31,9 +32,8 @@ const formSchema = z.object({
 });
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  const { token } = useSelector((state: RootState) => state.auth);
   const [login, { isSuccess, data, error, isLoading }] = useLoginMutation();
-
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -50,6 +50,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     if (isSuccess) {
       toast.success(data?.message || 'Account created successfully!');
       form.reset();
+      router.push('/dashboard');
     } else if (error) {
       if ('data' in error) {
         toast.error(`
@@ -61,7 +62,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           `);
       }
     }
-  }, [isSuccess, error, data, form]);
+  }, [isSuccess, error, data, form, router]);
 
   return (
     <div className={cn('grid gap-6', className)} {...props}>
