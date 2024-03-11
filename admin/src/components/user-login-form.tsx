@@ -20,6 +20,7 @@ import {
 } from './ui/form';
 import { useLoginMutation } from '@/redux/features/auth/authApi';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -37,6 +38,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     },
   });
 
+  const { push } = useRouter();
+
   const [login, { isSuccess, data, error, isLoading }] = useLoginMutation();
 
   async function onSubmit() {
@@ -47,6 +50,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     if (isSuccess) {
       toast.success(data?.message || 'Account created successfully!');
       form.reset();
+      push('/dashboard');
     } else if (error) {
       if ('data' in error) {
         toast.error(`
@@ -58,7 +62,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           `);
       }
     }
-  }, [isSuccess, error, data, form]);
+  }, [isSuccess, error, data, form, push]);
 
   return (
     <div className={cn('grid gap-6', className)} {...props}>

@@ -1,5 +1,6 @@
+import NoRequireAuth from '@/providers/auth-page';
 import React from 'react';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+  return <NoRequireAuth>{children}</NoRequireAuth>;
 }

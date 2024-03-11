@@ -6,23 +6,20 @@ import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { ReactNode, useEffect, useState } from 'react';
 import { RootState } from '@/redux/store';
-import Loader from '@/components/loader';
-import { useLoadUserQuery } from '@/redux/features/api/apiSlice';
 
-export default function RequireAuth({ children }: { children: ReactNode }) {
+const authRoutes = ['/login', '/register', '/activate-account'];
+
+export default function NoRequireAuth({ children }: { children: ReactNode }) {
   const [isUser, setIsUser] = useState({});
   const { user } = useSelector((state: RootState) => state.auth);
   const pathname = usePathname();
   const { push } = useRouter();
-  const { isLoading } = useLoadUserQuery({});
 
   useEffect(() => {
-    if (!user && pathname.startsWith('/dashboard')) push('/login');
+    if (user && authRoutes.includes(pathname)) push('/dashboard');
 
     if (user) setIsUser(user);
   }, [user, pathname, push]);
 
-  if (!user?.email) return <Loader />;
-
-  return <>{isLoading ? <Loader /> : <>{children}</>}</>;
+  return <>{children}</>;
 }
