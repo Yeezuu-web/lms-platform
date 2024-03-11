@@ -1,6 +1,6 @@
-import { ProfileForm } from '@/app/dashboard/settings/components/profile-form';
 import { Separator } from '@/components/ui/separator';
 import React from 'react';
+import { ProfileForm } from '../components/profile-form';
 
 export default function Settings() {
   return (
