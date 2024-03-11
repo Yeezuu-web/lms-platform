@@ -14,6 +14,8 @@ export default function RequireAuth({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const { push } = useRouter();
 
+  console.log(user);
+
   useEffect(() => {
     if (!user && pathname.startsWith('/dashboard')) push('/login');
 
