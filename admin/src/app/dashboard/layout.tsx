@@ -1,6 +1,7 @@
 import { Main } from '@/components/main';
 import { cookies } from 'next/headers';
 import React from 'react';
+import ProtectPage from '@/providers/protect-page';
 
 const accounts = [
   {
@@ -53,14 +54,16 @@ export default function DashboardLayout({
   const defaultCollapsed = collapsed ? JSON.parse(collapsed.value) : undefined;
   return (
     <div className="w-full h-full min-h-fit">
-      <Main
-        defaultLayout={defaultLayout}
-        defaultCollapsed={defaultCollapsed}
-        navCollapsedSize={4}
-        accounts={accounts}
-      >
-        {children}
-      </Main>
+      <ProtectPage>
+        <Main
+          defaultLayout={defaultLayout}
+          defaultCollapsed={defaultCollapsed}
+          navCollapsedSize={4}
+          accounts={accounts}
+        >
+          {children}
+        </Main>
+      </ProtectPage>
     </div>
   );
 }
