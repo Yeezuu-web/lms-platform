@@ -3,7 +3,7 @@
 import Loader from '@/components/loader';
 import { useLoadUserQuery } from '@/redux/features/api/apiSlice';
 import { RootState } from '@/redux/store';
-import { IUser } from '@/servers/user-actions';
+import { IUser } from '@/actions/get-user';
 import { redirect, usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';

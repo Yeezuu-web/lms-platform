@@ -18,11 +18,7 @@ import {
   FormLabel,
   FormMessage,
 } from './ui/form';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
-import { useLoginMutation } from '@/redux/features/auth/authApi';
-import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
+import { login } from '@/actions/login-user';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -32,8 +28,6 @@ const formSchema = z.object({
 });
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  const [login, { isSuccess, data, error, isLoading }] = useLoginMutation();
-  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -42,27 +36,13 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     },
   });
 
-  async function onSubmit() {
-    await login(form.getValues()).unwrap();
-  }
+  const [isPending, startTransition] = React.useTransition();
 
-  React.useEffect(() => {
-    if (isSuccess) {
-      toast.success(data?.message || 'Account created successfully!');
-      form.reset();
-      router.push('/dashboard');
-    } else if (error) {
-      if ('data' in error) {
-        toast.error(`
-            ${(error as any).data?.message} ${
-          (error as any).data?.ttl
-            ? 'wait ' + (error as any).data?.ttl + 's'
-            : ''
-        }
-          `);
-      }
-    }
-  }, [isSuccess, error, data, form, router]);
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    startTransition(async () => {
+      await login(values);
+    });
+  };
 
   return (
     <div className={cn('grid gap-6', className)} {...props}>
@@ -82,7 +62,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                     autoCapitalize="none"
                     autoComplete="email"
                     autoCorrect="off"
-                    disabled={isLoading}
+                    disabled={isPending}
                     {...field}
                   />
                 </FormControl>
@@ -101,7 +81,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                     id="password"
                     placeholder="Password"
                     type="password"
-                    disabled={isLoading}
+                    disabled={isPending}
                     {...field}
                   />
                 </FormControl>
@@ -116,8 +96,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 Email
               </Label>
             </div>
-            <Button disabled={isLoading}>
-              {isLoading && (
+            <Button disabled={isPending}>
+              {isPending && (
                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
               )}
               Sign In
@@ -135,8 +115,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           </span>
         </div>
       </div>
-      <Button variant="outline" type="button" disabled={isLoading}>
-        {isLoading ? (
+      <Button variant="outline" type="button" disabled={isPending}>
+        {isPending ? (
           <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
         ) : (
           <Icons.gitHub className="mr-2 h-4 w-4" />

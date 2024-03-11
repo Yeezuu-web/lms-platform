@@ -1,4 +1,4 @@
-import { IUser } from '@/servers/user-actions';
+import { IUser } from '@/actions/get-user';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 export interface AuthState {
