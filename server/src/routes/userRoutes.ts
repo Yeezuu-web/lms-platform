@@ -17,6 +17,6 @@ UserRoutes.post('/activate-user', activationUser);
 UserRoutes.post('/login', loginUser);
 UserRoutes.post('/logout', isAuthenticated, logoutUser);
 UserRoutes.get('/me', isAuthenticated, getAuth);
-UserRoutes.get('/refresh-token', isAuthenticated, refresh);
+UserRoutes.get('/refresh-token', refresh);
 
 export default UserRoutes;

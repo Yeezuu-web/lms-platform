@@ -33,7 +33,7 @@ app.use(
 app.set('trust proxy', true);
 
 app.get('/favico.ico', (req: Request, res: Response) => {
-  res.sendStatus(200).end();
+  res.sendStatus(200);
 });
 
 app.use('/api/v1', UserRoutes);

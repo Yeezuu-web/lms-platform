@@ -164,7 +164,10 @@ export const loginUser = CatchAsyncMiddleware(
 
       const isCorrectPassword = await user.comparePassword(password);
       if (!isCorrectPassword) {
-        const error = new ErrorHandler('Password field is incorrect.', 400);
+        const error = new ErrorHandler(
+          'Email or Password field is incorrect.',
+          400
+        );
         return error.sendErrorResponse(res);
       }
 
@@ -207,7 +210,7 @@ export const refresh = CatchAsyncMiddleware(
     try {
       const refresh_token =
         (req.cookies.refresh_token as string) ||
-        extractToken(req.headers.refresh_token as string);
+        extractToken(req.headers.authorization as string);
 
       if (!refresh_token) {
         const error = new ErrorHandler('Refresh token is not found.', 401);
@@ -242,7 +245,7 @@ export const refresh = CatchAsyncMiddleware(
         payload,
         process.env.ACCESS_TOKEN_SECRET as Secret,
         {
-          expiresIn: '5m',
+          expiresIn: '15m',
         }
       );
 
@@ -256,6 +259,8 @@ export const refresh = CatchAsyncMiddleware(
 
       res.cookie('access_token', accessToken, accessTokenOptions);
       res.cookie('refresh_token', refresToken, refreshTokenOptions);
+
+      console.log(res);
 
       res.status(200).json({ success: true, accessToken });
     } catch (e: any) {

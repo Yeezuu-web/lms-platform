@@ -79,7 +79,9 @@ userSchema.methods.SignAccessToken = function () {
     username: this.username,
   };
 
-  return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET || '');
+  return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET || '', {
+    expiresIn: '15m',
+  });
 };
 
 // Sign refresh token
@@ -88,7 +90,9 @@ userSchema.methods.SignRefreshToken = function () {
     sub: this._id, // subject - it should be unique identifier of user
     username: this.username,
   };
-  return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET || '');
+  return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET || '', {
+    expiresIn: '2day',
+  });
 };
 
 const userModel: Model<IUser> = mongoose.model<IUser>('User', userSchema);
